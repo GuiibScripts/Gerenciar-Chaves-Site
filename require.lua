@@ -49,6 +49,7 @@ local function carregarIDs()
 end
 
 -- Função para verificar autorização do usuário
+-- Função para verificar autorização do usuário
 local function verificarAutorizacao()
     local userId = Engine.getUserId()
     local userIdHex = toHex(userId)
@@ -67,11 +68,14 @@ local function verificarAutorizacao()
                     local dataExpiracaoTimestamp = os.time({
                         year = tonumber(ano),
                         month = tonumber(mes),
-                        day = tonumber(dia)
+                        day = tonumber(dia),
+                        hour = 23,
+                        min = 59,
+                        sec = 59
                     })
                     local dataAtual = os.time()
                     
-                    if dataExpiracaoTimestamp > dataAtual then
+                    if dataExpiracaoTimestamp >= dataAtual then
                         -- A chave não expirou
                         local teste = HUD.new(650, 500, "FUNCIONOU", true)
                         teste:setColor(0, 255, 0)
@@ -93,13 +97,13 @@ local function verificarAutorizacao()
         end
     end
 
-    print("Usuário não autorizado ou chave não encontrada.")
-    local teste = HUD.new(650, 500, "Usuário não autorizado", true)
+    local teste = HUD.new(650, 500, "Usuario nao autorizado!", true)
     teste:setColor(255, 255, 255)
     teste:setFontSize(16)
     local teste2 = HUD.new(550, 530, "Solicite suporte via ticket no nosso Discord", true)
     teste2:setColor(255, 255, 255)
     teste2:setFontSize(16)
+    
 
     return false
 end
