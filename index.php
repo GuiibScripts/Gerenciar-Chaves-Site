@@ -22,16 +22,27 @@ if (file_exists($keys_file)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Chaves - GuiiB Scripts</title>
     <link rel="stylesheet" href="style.css">
+    
 </head>
-<body>
-    <div class="container">
-        <h1>Gerenciamento de Chave - GuiiB Scripts</h1>
+<body>            
 
-        <div class="new-key">
+
+    <div class="container">
+        <div class="logo">
+        <h1>Gerenciamento de Chaves</h1>
+        <img src="Logo_GuiiB.png" alt="Logo GuiiB" class="logo">
+
+        </div>
+        
+
+        <div class="new-key">            
             <input type="text" id="newKey" class="input-field" placeholder="Digite a chave de 128 caracteres" maxlength="128">
             <input type="date" id="expiryDate" class="date-selector">
             <button class="button" onclick="addKey()">Adicionar Chave</button>
+
+            
         </div>
+        
 
         <table class="key-list">
             <thead>
