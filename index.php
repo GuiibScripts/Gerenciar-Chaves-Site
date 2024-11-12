@@ -1,4 +1,7 @@
 <?php
+// Define o fuso horário para o Brasil
+date_default_timezone_set('America/Sao_Paulo');
+
 // Define o caminho do arquivo onde as chaves serão armazenadas
 $keys_file = 'keys.json';
 
@@ -41,11 +44,14 @@ if (file_exists($keys_file)) {
             </thead>
             <tbody id="keyTableBody">
                 <?php
-                // Exibe as chaves armazenadas
+                // Exibe as chaves armazenadas com o status correto
                 foreach ($keys_data as $key) {
                     $formatted_date = date('d/m/Y', strtotime($key['expiryDate']));
-                    $status = (strtotime($key['expiryDate']) > time()) ? 'Ativa' : 'Expirada';
-                    $status_class = (strtotime($key['expiryDate']) > time()) ? 'active' : 'expired';
+                    
+                    // Verifica o status com a data atual de Brasília
+                    $status = (strtotime($key['expiryDate']) >= strtotime('today')) ? 'Ativa' : 'Expirada';
+                    $status_class = ($status === 'Ativa') ? 'active' : 'expired';
+
                     echo "<tr>
                             <td>{$key['key']}</td>
                             <td>{$formatted_date}</td>

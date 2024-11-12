@@ -1,35 +1,65 @@
-// Função para adicionar uma nova chave
 function addKey() {
     var newKey = document.getElementById("newKey").value;
     var expiryDate = document.getElementById("expiryDate").value;
 
-    // Verifica se a chave e a data foram preenchidas
     if (newKey && expiryDate) {
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "save_keys.php", true);  // O arquivo PHP que processa o salvamento
+        xhr.open("POST", "save_keys.php", true);
         xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
 
-        // Função de callback quando a requisição for completada
         xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
-                var response = xhr.responseText;
-                
-                if (response.includes("Erro: chave já cadastrada")) {
-                    alert(response);  // Exibe o alerta com o erro
-                    highlightDuplicateKey(newKey);  // Chama a função para destacar a chave duplicada
-                } else {
-                    alert(response);  // Exibe a resposta de sucesso
-                    location.reload();  // Recarrega a página para mostrar a chave salva
-                }
+                alert(xhr.responseText);
+                location.reload();
             }
         };
 
-        // Envia a chave e a data para o PHP
         xhr.send("key=" + encodeURIComponent(newKey) + "&expiryDate=" + encodeURIComponent(expiryDate));
     } else {
         alert("Por favor, insira todos os campos.");
     }
 }
+
+function formatDateToDDMMYYYY(dateStr) {
+    const [year, month, day] = dateStr.split("-");
+    return `${day}/${month}/${year}`;
+}
+
+function formatDateToYYYYMMDD(dateStr) {
+    const [day, month, year] = dateStr.split("/");
+    return `${year}-${month}-${day}`;
+}
+
+function editKey(key, currentExpiryDate) {
+    // Converte a data para o formato dd/mm/yyyy para exibir no prompt
+    const formattedCurrentDate = formatDateToDDMMYYYY(currentExpiryDate);
+
+    var newExpiryDate = prompt("Digite a nova data de expiração (dd/mm/yyyy):", formattedCurrentDate);
+    
+    // Verifica se a data é válida e no formato dd/mm/yyyy
+    if (newExpiryDate && /^\d{2}\/\d{2}\/\d{4}$/.test(newExpiryDate)) {
+        // Converte a data de volta para o formato yyyy-mm-dd antes de enviar
+        const formattedDateForServer = formatDateToYYYYMMDD(newExpiryDate);
+
+        var xhr = new XMLHttpRequest();
+        xhr.open("POST", "save_keys.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+
+        xhr.onreadystatechange = function() {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                alert(xhr.responseText);
+                // Atualiza a data na tabela no formato dd/mm/yyyy
+                document.getElementById(`expiry-${key}`).textContent = newExpiryDate;
+            }
+        };
+
+        xhr.send("key=" + encodeURIComponent(key) + "&expiryDate=" + encodeURIComponent(formattedDateForServer));
+    } else {
+        alert("Por favor, insira uma data válida no formato dd/mm/yyyy.");
+    }
+}
+
+
 
 // Função para mover a página até a chave duplicada
 function highlightDuplicateKey(key) {
