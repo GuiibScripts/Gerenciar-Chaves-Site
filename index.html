@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerenciamento de Chaves - GuiiB Scripts</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Gerenciamento de Chave - GuiiB Scripts</h1>
+
+        <div class="new-key">
+            <input type="text" id="newKey" class="input-field" placeholder="Digite a chave de 128 caracteres" maxlength="128">
+            <!-- Alterado para input tipo text para data em formato dd/mm/yyyy -->
+            <input type="text" id="expiryDate" class="date-selector" placeholder="Digite a data (dd/mm/yyyy)">
+            <button class="button" onclick="addKey()">Adicionar Chave</button>
+        </div>
+
+        <table class="key-list">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Data Expiração</th>
+                    <th>Status</th>
+                    <th>Ação</th>
+                </tr>
+            </thead>
+            <tbody id="keyTableBody">
+                <!-- Chaves serão adicionadas aqui dinamicamente -->
+            </tbody>
+        </table>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
