@@ -13,6 +13,10 @@ if (file_exists($keys_file)) {
     // Se não existir, cria um array vazio para as chaves
     $keys_data = [];
 }
+
+// Verifica a senha enviada
+$senha_correta = '572298'; // Defina a senha correta
+$acesso_autorizado = isset($_POST['senha']) && $_POST['senha'] === $senha_correta;
 ?>
 
 <!DOCTYPE html>
@@ -22,27 +26,35 @@ if (file_exists($keys_file)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gerenciamento de Chaves - GuiiB Scripts</title>
     <link rel="stylesheet" href="style.css">
-    
 </head>
 <body>            
 
-
+<?php if (!$acesso_autorizado): ?>
+    <!-- Formulário de senha -->
     <div class="container">
         <div class="logo">
-        <h1>Gerenciamento de Chaves</h1>
-        <img src="Logo_GuiiB.png" alt="Logo GuiiB" class="logo">
-
+            <h1>Gerenciamento de Chaves</h1>
+            <img src="Logo_GuiiB.png" alt="Logo GuiiB" class="logo">
         </div>
-        
+
+        <form id="loginForm" method="POST">
+            <input type="password" name="senha" class="input-field" placeholder="Digite a senha de acesso" required>
+            <button type="submit" class="button">Entrar</button>
+        </form>
+    </div>
+<?php else: ?>
+    <!-- Conteúdo do gerenciamento de chaves -->
+    <div class="container">
+        <div class="logo">
+            <h1>Gerenciamento de Chaves</h1>
+            <img src="Logo_GuiiB.png" alt="Logo GuiiB" class="logo">
+        </div>
 
         <div class="new-key">            
             <input type="text" id="newKey" class="input-field" placeholder="Digite a chave de 128 caracteres" maxlength="128">
             <input type="date" id="expiryDate" class="date-selector">
             <button class="button" onclick="addKey()">Adicionar Chave</button>
-
-            
         </div>
-        
 
         <table class="key-list">
             <thead>
@@ -74,7 +86,8 @@ if (file_exists($keys_file)) {
             </tbody>
         </table>
     </div>
+<?php endif; ?>
 
-    <script src="script.js"></script>
+<script src="script.js"></script>
 </body>
 </html>
